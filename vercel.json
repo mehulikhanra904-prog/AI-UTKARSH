@@ -1,0 +1,3 @@
+{
+  "buildCommand": "node -e \"require('fs').writeFileSync('api-config.js', 'window.API_BASE_URL = ' + JSON.stringify(process.env.API_BASE_URL || '') + ';\\n')\""
+}
