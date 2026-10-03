@@ -9,6 +9,6 @@ services:
       - key: MONGODB_URI
         sync: false
       - key: DB_NAME
-        sync: false
+        value: ai_utkarsh
       - key: FRONTEND_URLS
         sync: false
