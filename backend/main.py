@@ -5,21 +5,30 @@ from fastapi.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 from pydantic import BaseModel, EmailStr, Field
 
+
+def required_env(name: str) -> str:
+    value = os.getenv(name)
+    if not value:
+        raise RuntimeError(f"Required environment variable is missing: {name}")
+    return value
+
+
+frontend_urls = [url.strip() for url in required_env("FRONTEND_URLS").split(",") if url.strip()]
+mongodb_uri = required_env("MONGODB_URI")
+db_name = required_env("DB_NAME")
+
 app = FastAPI(title="Mehuli Portfolio API", version="2.0.0")
 
-frontend_urls = os.getenv("FRONTEND_URLS", "http://localhost:5173,http://localhost:3000").split(",")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[url.strip() for url in frontend_urls if url.strip()],
+    allow_origins=frontend_urls,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-MONGODB_URI = os.getenv("MONGODB_URI")
-DB_NAME = os.getenv("DB_NAME", "ai_utkarsh")
-mongo_client = AsyncIOMotorClient(MONGODB_URI) if MONGODB_URI else None
-db = mongo_client[DB_NAME] if mongo_client else None
+mongo_client = AsyncIOMotorClient(mongodb_uri)
+db = mongo_client[db_name]
 
 
 class ContactMessage(BaseModel):
@@ -36,13 +45,11 @@ async def root():
 
 @app.get("/api/health")
 async def health():
-    database = "not_configured"
-    if db is not None:
-        try:
-            await db.command("ping")
-            database = "connected"
-        except Exception:
-            database = "unavailable"
+    try:
+        await db.command("ping")
+        database = "connected"
+    except Exception:
+        database = "unavailable"
     return {"status": "ok", "service": "ai-utkarsh-api", "database": database}
 
 
@@ -58,9 +65,6 @@ async def projects():
 
 @app.post("/api/contact")
 async def contact(message: ContactMessage):
-    if db is None:
-        raise HTTPException(status_code=503, detail="Database is not configured.")
-
     document = message.model_dump()
     document["received_at"] = datetime.now(timezone.utc)
 
