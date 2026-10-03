@@ -1,59 +1,9 @@
-const observer = new IntersectionObserver(
-  entries => entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add("show");
-      observer.unobserve(entry.target);
-    }
-  }),
-  { threshold: 0.12 }
-);
-
-document.querySelectorAll(".section,.project,.principles article,.stack-grid div,.stats div").forEach((element, index) => {
-  element.style.opacity = "0";
-  element.style.transform = "translateY(18px)";
-  element.style.transition = "opacity .7s ease,transform .7s ease";
-  element.style.transitionDelay = (index % 5) * 60 + "ms";
-  observer.observe(element);
-});
-
-const style = document.createElement("style");
-style.textContent = ".show{opacity:1!important;transform:translateY(0)!important}";
-document.head.appendChild(style);
-
-const API_BASE = "https://ai-utkarsh-3.onrender.com";
-
-const form = document.getElementById("contact-form");
-const status = document.getElementById("form-status");
-
-if (form) {
-  form.addEventListener("submit", async event => {
-    event.preventDefault();
-    status.textContent = "Sending...";
-
-    if (!API_BASE) {
-      status.textContent = "API configuration is missing.";
-      return;
-    }
-
-    const data = Object.fromEntries(new FormData(form).entries());
-
-    try {
-      const response = await fetch(API_BASE + "/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-      });
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.detail?.[0]?.msg || result.detail || "Unable to send message.");
-      }
-
-      status.textContent = result.message || "Message sent successfully.";
-      form.reset();
-    } catch (error) {
-      status.textContent = "Unable to send your message right now.";
-      console.error(error);
-    }
-  });
-}
+const API_BASE="https://ai-utkarsh-3.onrender.com";
+const status=document.getElementById("apiStatus"),toast=document.getElementById("toast");
+function showToast(message){toast.textContent=message;toast.classList.add("show");setTimeout(()=>toast.classList.remove("show"),2600)}
+async function loadProjects(){try{const res=await fetch(API_BASE+"/api/projects");if(!res.ok)throw new Error();const data=await res.json();if(Array.isArray(data.projects)){const count=document.getElementById("projectCount");if(count)count.textContent=String(data.projects.length).padStart(2,"0")}if(status)status.textContent="● API CONNECTED"}catch(e){if(status)status.textContent="● LOCAL MODE"}}
+const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add("visible");observer.unobserve(entry.target)}}),{threshold:.12});
+document.querySelectorAll(".metric,.subject-grid article,.gap-grid>div,.projects article,.road,.hero-card").forEach((el,i)=>{el.style.opacity="0";el.style.transform="translateY(18px)";el.style.transition="opacity .65s ease,transform .65s ease";el.style.transitionDelay=(i%5)*60+"ms";observer.observe(el)});
+const animationStyle=document.createElement("style");animationStyle.textContent=".visible{opacity:1!important;transform:translateY(0)!important}";document.head.appendChild(animationStyle);
+document.getElementById("openProfile")?.addEventListener("click",()=>showToast("Student profile module is ready for the next data layer."));
+loadProjects();
