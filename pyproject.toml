@@ -1,7 +1,7 @@
 [project]
 name = "ai-utkarsh-api"
 version = "1.0.0"
-description = "Mehuli Portfolio API"
+description = "AI-UTKARSH API"
 requires-python = ">=3.12,<3.13"
 dependencies = [
     "fastapi",
@@ -9,6 +9,3 @@ dependencies = [
     "pydantic[email]",
     "motor",
 ]
-
-[tool.vercel]
-entrypoint = "backend.main:app"
