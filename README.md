@@ -1,11 +1,34 @@
 # AI-UTKARSH — Academic AI Engineering Portfolio
 
-A professional institute-inspired portfolio for **Mehuli Khanra**, B.Tech Computer Science & Engineering student. The design combines academic identity, project showcase, technical toolkit, engineering journey, and a real FastAPI + MongoDB contact backend.
+A professional institute-inspired portfolio for **Mehuli Khanra**, B.Tech Computer Science & Engineering student. The site combines academic identity, project showcase, technical toolkit, engineering journey, and a FastAPI + MongoDB contact backend.
 
-## Live project
+## Configuration
 
-- GitHub: https://github.com/mehulikhanra904-prog/AI-UTKARSH
-- Backend deployment configuration: Render via `render.yaml`
+Deployment-specific values are intentionally kept out of application source code.
+
+### Vercel frontend
+
+Add this environment variable to the Vercel project:
+
+```text
+API_BASE_URL=<your-deployed-fastapi-base-url>
+```
+
+Vercel generates `api-config.js` during the build from this variable. The API URL is therefore not stored in `index.html` or `script.js`.
+
+### Render backend
+
+Add these environment variables to the Render service:
+
+```text
+MONGODB_URI=<your-mongodb-connection-string>
+DB_NAME=<your-database-name>
+FRONTEND_URLS=<your-vercel-origin>
+```
+
+The backend requires all three values and does not use localhost, database-name, or CORS fallbacks.
+
+For local development, use your own environment configuration. Never commit real credentials or deployment URLs that are intended to remain configurable.
 
 ## What is included
 
@@ -16,9 +39,10 @@ A professional institute-inspired portfolio for **Mehuli Khanra**, B.Tech Comput
 - Responsive contact form
 - FastAPI backend
 - MongoDB Atlas persistence for contact submissions
-- CORS configuration through environment variables
+- Environment-driven CORS and database configuration
+- Environment-driven frontend API configuration
 - Health endpoint with database connection status
-- Render deployment configuration
+- Vercel and Render deployment configuration
 
 ## Tech stack
 
@@ -43,38 +67,6 @@ A professional institute-inspired portfolio for **Mehuli Khanra**, B.Tech Comput
 - Vercel / static hosting for frontend
 - Render for FastAPI backend
 
-## MongoDB Atlas setup
-
-Create a MongoDB Atlas cluster and database user, then add these environment variables to your Render service:
-
-```text
-MONGODB_URI=mongodb+srv://<username>:<password>@<cluster>/<database>?retryWrites=true&w=majority
-DB_NAME=ai_utkarsh
-FRONTEND_URLS=https://YOUR-VERCEL-DOMAIN.vercel.app
-```
-
-For local development, copy `backend/.env.example` to your own environment configuration. **Never commit a real MongoDB password or connection string to GitHub.**
-
-The backend automatically creates/uses the `contact_messages` collection when a contact form is submitted.
-
-### Verify the database
-
-Open:
-
-`/api/health`
-
-A working connection returns:
-
-```json
-{
-  "status": "ok",
-  "service": "ai-utkarsh-api",
-  "database": "connected"
-}
-```
-
-If the URI has not been configured, the API reports `not_configured`.
-
 ## API
 
 - `GET /` — API status
@@ -96,21 +88,20 @@ pip install -r requirements.txt
 uvicorn main:app --reload
 ```
 
-Backend docs:
+Set the required backend environment variables before starting the API.
 
-`http://127.0.0.1:8000/docs`
+Backend docs are available at the configured local API origin followed by `/docs`.
 
 ### Frontend
 
-Open `index.html` with VS Code Live Server.
-
-Before production deployment, set `window.API_BASE_URL` to the deployed FastAPI URL in the frontend configuration so the contact form targets the Render API.
+Set `API_BASE_URL` in your local environment/build configuration, then open `index.html` with your static development server.
 
 ## Security notes
 
 - Database credentials are environment variables, never source code.
+- Deployment-specific API origins are environment variables, never source code.
 - Contact messages are not exposed through a public read endpoint.
 - Use a strong Atlas database password.
 - Configure Atlas Network Access for your deployment environment.
 
-Built by **Mehuli Khanra** · Kolkata, India
+Built by **Mehuli Khanra**.
