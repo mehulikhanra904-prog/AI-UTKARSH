@@ -20,9 +20,7 @@ const style = document.createElement("style");
 style.textContent = ".show{opacity:1!important;transform:translateY(0)!important}";
 document.head.appendChild(style);
 
-const API_BASE = typeof window.API_BASE_URL === "string"
-  ? window.API_BASE_URL.replace(/\\/$/, "")
-  : "";
+const API_BASE = "https://ai-utkarsh-3.onrender.com";
 
 const form = document.getElementById("contact-form");
 const status = document.getElementById("form-status");
