@@ -1,5 +1,5 @@
 const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add("show");observer.unobserve(e.target)}}),{threshold:.12});document.querySelectorAll(".section,.project,.principles article,.stack-grid div,.stats div").forEach((el,i)=>{el.style.opacity="0";el.style.transform="translateY(18px)";el.style.transition="opacity .7s ease,transform .7s ease";el.style.transitionDelay=(i%5)*60+"ms";observer.observe(el)});const style=document.createElement("style");style.textContent=".show{opacity:1!important;transform:translateY(0)!important}";document.head.appendChild(style);
-const API_BASE=(window.API_BASE_URL||"").replace(/\\/$/,"");
+const API_BASE=(window.API_BASE_URL||"https://ai-utkarsh-1.onrender.com").replace(/\\/$/,"");
 const form=document.getElementById("contact-form");
 const status=document.getElementById("form-status");
 if(form){
