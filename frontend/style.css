@@ -8,3 +8,31 @@
 .project-tech span{font:500 8px "DM Mono",monospace;letter-spacing:.05em;color:#68788d;background:#f2f5f8;border:1px solid #d9e1e9;border-radius:99px;padding:5px 8px}
 .project-links{display:flex;gap:14px;flex-wrap:wrap}
 .project-links a{border-bottom:1px solid #b38745;padding-bottom:3px}
+
+/* UTKARSH v2 — responsive navigation + daily focus experience */
+.menu-toggle{display:none;border:1px solid #bdc8d6;background:#fff;color:#10243e;border-radius:5px;padding:10px 12px;font-size:18px;cursor:pointer}
+.focus-section{background:#f6f8fb}
+.focus-layout{display:grid;grid-template-columns:1.4fr .8fr;gap:16px;margin-top:55px}
+.focus-card,.focus-note{background:#fff;border:1px solid #d6dee8;border-radius:9px;padding:30px}
+.focus-card-top{display:flex;justify-content:space-between;font:500 9px "DM Mono",monospace;letter-spacing:.12em;color:#8290a2}
+.focus-card h3{font-size:clamp(24px,3vw,38px);letter-spacing:-.05em;color:#10243e;margin:30px 0 8px}
+.focus-card>p,.focus-note p{font-size:13px;color:#6b7a8e;line-height:1.7}
+.focus-list{display:grid;gap:12px;margin:28px 0}
+.focus-list label{display:flex;align-items:center;gap:12px;padding:16px;background:#f5f7fa;border:1px solid #e0e6ed;border-radius:6px;cursor:pointer;color:#344a63;font-size:13px;transition:.2s}
+.focus-list label:has(input:checked){background:#edf3ed;border-color:#c8d9c5;color:#486344}
+.focus-list input{accent-color:#607c56;width:17px;height:17px}
+.focus-progress>div{display:flex;justify-content:space-between;font:500 10px "DM Mono",monospace;color:#758398;margin-bottom:9px}
+.focus-progress>i{display:block;height:7px;border-radius:99px;background:#e2e8ef;overflow:hidden}
+.focus-progress em{display:block;width:0;height:100%;background:#718c65;border-radius:99px;transition:width .25s}
+.focus-side{display:grid;gap:14px;align-content:start}
+.focus-note{padding:25px}
+.focus-note small{display:block;font:500 9px "DM Mono",monospace;letter-spacing:.12em;color:#8491a2;margin-bottom:18px}
+.focus-note a{display:flex;justify-content:space-between;padding:13px 0;border-top:1px solid #e2e7ed;color:#314963;text-decoration:none;font-size:12px;font-weight:700}
+.focus-note a span{color:#b3833e}
+.gold-note{background:#10243e;color:white;border-color:#10243e}
+.gold-note small{color:#c4cfdd}.gold-note strong{font-size:21px;letter-spacing:-.04em}.gold-note p{color:#bac7d5}
+.nav nav a{position:relative}.nav nav a:after{content:"";position:absolute;left:0;bottom:-7px;width:0;height:2px;background:#b3833e;transition:width .2s}.nav nav a:hover:after{width:100%}
+.btn:focus-visible,.nav-action:focus-visible,.menu-toggle:focus-visible,a:focus-visible{outline:3px solid #b3833e;outline-offset:3px}
+@media(max-width:900px){.nav{gap:10px}.menu-toggle{display:inline-block}.nav nav{display:none;position:absolute;top:81px;left:0;right:0;background:#f6f8fb;border-bottom:1px solid #d6dee8;padding:20px 5vw;flex-direction:column;gap:18px}.nav nav.open{display:flex}.nav nav a{font-size:12px}.focus-layout{grid-template-columns:1fr}}
+@media(max-width:600px){.nav{padding:0 4vw}.nav-action{padding:9px 10px}.focus-card,.focus-note{padding:22px}.focus-card h3{margin-top:23px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
