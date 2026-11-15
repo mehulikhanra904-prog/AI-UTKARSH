@@ -7,3 +7,14 @@ document.querySelectorAll(".metric,.subject-grid article,.gap-grid>div,.projects
 const animationStyle=document.createElement("style");animationStyle.textContent=".visible{opacity:1!important;transform:translateY(0)!important}";document.head.appendChild(animationStyle);
 document.getElementById("openProfile")?.addEventListener("click",()=>showToast("Student profile module is ready for the next data layer."));
 loadProjects();
+/* Daily focus tracker — persists in this browser */
+(()=>{
+ const checks=[...document.querySelectorAll("[data-focus]")],key="utkarsh_daily_focus_v1";
+ const dateEl=document.getElementById("focusDate");
+ if(dateEl)dateEl.textContent=new Date().toLocaleDateString(undefined,{weekday:"short",day:"2-digit",month:"short"}).toUpperCase();
+ let state={date:new Date().toDateString(),done:[false,false,false]};
+ try{const saved=JSON.parse(localStorage.getItem(key)||"null");if(saved&&saved.date===state.date)state=saved}catch(e){}
+ const count=document.getElementById("focusCount"),pct=document.getElementById("focusPercent"),bar=document.getElementById("focusBar");
+ function paint(){const n=state.done.filter(Boolean).length;checks.forEach((c,i)=>c.checked=!!state.done[i]);if(count)count.textContent=n+" / 3 complete";if(pct)pct.textContent=Math.round(n/3*100)+"%";if(bar)bar.style.width=(n/3*100)+"%";localStorage.setItem(key,JSON.stringify(state))}
+ checks.forEach((c,i)=>c.addEventListener("change",()=>{state.done[i]=c.checked;paint()}));paint();
+})();
