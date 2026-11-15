@@ -18,3 +18,6 @@ loadProjects();
  function paint(){const n=state.done.filter(Boolean).length;checks.forEach((c,i)=>c.checked=!!state.done[i]);if(count)count.textContent=n+" / 3 complete";if(pct)pct.textContent=Math.round(n/3*100)+"%";if(bar)bar.style.width=(n/3*100)+"%";localStorage.setItem(key,JSON.stringify(state))}
  checks.forEach((c,i)=>c.addEventListener("change",()=>{state.done[i]=c.checked;paint()}));paint();
 })();
+
+/* Accessible mobile navigation */
+(()=>{const toggle=document.getElementById("menuToggle"),nav=document.querySelector(".nav nav");if(!toggle||!nav)return;toggle.addEventListener("click",()=>{const open=nav.classList.toggle("open");toggle.setAttribute("aria-expanded",String(open));toggle.textContent=open?"✕":"☰"});nav.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>{nav.classList.remove("open");toggle.setAttribute("aria-expanded","false");toggle.textContent="☰"}));})();
