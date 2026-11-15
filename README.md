@@ -1,3 +1,35 @@
+## 🧠 AI Study Studio (New)
+
+The interactive AI workspace is available at **[frontend/ai.html](frontend/ai.html)** and includes:
+
+- **AI Tutor** — ask doubts with academic context
+- **Quiz Generator** — MCQs with answer keys and explanations (easy/medium/hard)
+- **Flashcards** — AI-generated quick revision cards
+- **Study Planner** — date-wise study schedule based on subjects, time and goal
+- **PDF Summarizer** — extract and summarize text from PDF notes
+
+### Backend setup (FastAPI)
+
+```powershell
+cd backend
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+$env:GEMINI_API_KEY="YOUR_GEMINI_API_KEY"
+$env:FRONTEND_URLS="http://localhost:5500,https://ai-utkarsh-frontend-ex54.vercel.app"
+uvicorn main:app --reload --port 8000
+```
+
+Open **http://127.0.0.1:8000/docs** to test endpoints. The AI endpoints require a Gemini API key set as `GEMINI_API_KEY`. Keep the key in backend environment variables (never in frontend JavaScript or committed files). PDF summarization accepts text-based PDFs up to 12 MB.
+
+```
+POST /api/ai/chat
+POST /api/ai/quiz
+POST /api/ai/flashcards
+POST /api/ai/study-plan
+POST /api/ai/summarize
+```
+
 # 🚀 AI UTKARSH — Academic & Career Intelligence Platform
 
 <p align="center">
