@@ -21,3 +21,25 @@ loadProjects();
 
 /* Accessible mobile navigation */
 (()=>{const toggle=document.getElementById("menuToggle"),nav=document.querySelector(".nav nav");if(!toggle||!nav)return;toggle.addEventListener("click",()=>{const open=nav.classList.toggle("open");toggle.setAttribute("aria-expanded",String(open));toggle.textContent=open?"✕":"☰"});nav.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>{nav.classList.remove("open");toggle.setAttribute("aria-expanded","false");toggle.textContent="☰"}));})();
+
+/* Account + profile API integration */
+(()=>{
+ const API=API_BASE,modal=document.getElementById("authModal"),form=document.getElementById("authForm"),message=document.getElementById("authMessage");
+ if(!modal||!form)return;
+ let mode="login",token=localStorage.getItem("utkarsh_token"),user=null;
+ const el=id=>document.getElementById(id);
+ function setMsg(t,good=false){message.textContent=t;message.style.color=good?"#55764b":"#a45d45"}
+ function showModal(){modal.classList.add("open");modal.setAttribute("aria-hidden","false");setMsg("");el("authEmail").focus()}
+ function hideModal(){modal.classList.remove("open");modal.setAttribute("aria-hidden","true")}
+ function setMode(next){mode=next;document.querySelectorAll("[data-auth]").forEach(b=>b.classList.toggle("active",b.dataset.auth===mode));el("authNameLabel").style.display=mode==="register"?"grid":"none";el("authTitle").textContent=mode==="register"?"Create your account.":"Welcome back.";el("authSubmit").textContent=mode==="register"?"Create account →":"Sign in →";el("authPassword").autocomplete=mode==="register"?"new-password":"current-password";setMsg("")}
+ document.querySelectorAll("[data-auth]").forEach(b=>b.addEventListener("click",()=>setMode(b.dataset.auth)));
+ el("authOpen").addEventListener("click",showModal);el("authClose").addEventListener("click",hideModal);modal.addEventListener("click",e=>{if(e.target===modal)hideModal()});document.addEventListener("keydown",e=>{if(e.key==="Escape")hideModal()});
+ el("openProfile")?.addEventListener("click",()=>document.getElementById("profile").scrollIntoView({behavior:"smooth"}));
+ function showUser(u){user=u;el("profileName").textContent=u.name;el("profileEmail").textContent=u.email;el("profileAvatar").textContent=(u.name||"U").trim().charAt(0).toUpperCase();el("authOpen").textContent="Account ✓";el("signOut").hidden=false;const p=u.profile||{};el("college").value=p.college||"";el("degree").value=p.degree||"B.Tech CSE";el("semester").value=String(p.semester||1);el("targetRole").value=p.target_role||"AI/ML Engineer";el("dailyHours").value=p.daily_hours??2}
+ async function request(path,opts={}){const r=await fetch(API+path,{...opts,headers:{...(opts.headers||{}),...(token?{Authorization:"Bearer "+token}:{})}});const d=await r.json().catch(()=>({detail:"Unexpected server response"}));if(!r.ok)throw Error(d.detail||"Request failed");return d}
+ form.addEventListener("submit",async e=>{e.preventDefault();setMsg("Connecting…");el("authSubmit").disabled=true;try{const body={email:el("authEmail").value,password:el("authPassword").value};if(mode==="register")body.name=el("authName").value;const d=await request("/api/auth/"+mode,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});token=d.token;localStorage.setItem("utkarsh_token",token);showUser(d.user);hideModal();el("profileMessage").textContent="Account ready. Your profile is now connected."}catch(e){setMsg(e.message)}finally{el("authSubmit").disabled=false}});
+ el("profileForm").addEventListener("submit",async e=>{e.preventDefault();const out=el("profileMessage");if(!token){out.textContent="Sign in first to save your profile.";showModal();return}out.textContent="Saving profile…";try{const profile={college:el("college").value,degree:el("degree").value,semester:Number(el("semester").value),target_role:el("targetRole").value,daily_hours:Number(el("dailyHours").value),skills:user?.profile?.skills||{}};const d=await request("/api/profile/me",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(profile)});user.profile=d.profile;out.textContent="Profile saved securely to your account ✓"}catch(e){out.textContent=e.message}});
+ el("signOut").addEventListener("click",()=>{token=null;user=null;localStorage.removeItem("utkarsh_token");el("profileName").textContent="Guest learner";el("profileEmail").textContent="Create an account to save your profile online.";el("profileAvatar").textContent="U";el("authOpen").textContent="Sign in ↗";el("signOut").hidden=true;el("profileMessage").textContent="Signed out."});
+ async function restore(){if(!token)return;try{const d=await request("/api/profile/me");showUser(d.user)}catch(e){token=null;localStorage.removeItem("utkarsh_token")}}
+ restore();
+})();
