@@ -626,3 +626,38 @@ It is a structured system for turning a student's learning journey into measurab
 <p align="center">
   Built with curiosity, consistency and code by <b>Mehuli Khanra</b>.
 </p>
+
+---
+
+## 👤 Student Accounts & Profile (v3)
+
+The dashboard now includes an account modal and a profile editor. New backend routes:
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/api/auth/register` | Create student account |
+| POST | `/api/auth/login` | Sign in |
+| GET | `/api/profile/me` | Read signed-in profile |
+| PUT | `/api/profile/me` | Save profile preferences |
+
+### Required Render environment variables
+
+Set these in **Render → your API service → Environment** before using account features:
+
+- `MONGODB_URI` — MongoDB Atlas connection string (create a database/user and allow Render's network access in Atlas).
+- `DB_NAME` — e.g. `ai_utkarsh`
+- `TOKEN_SECRET` — long, random secret (at least 32 characters; keep private).
+- `GEMINI_API_KEY` — Google AI Studio key for AI Study Studio.
+- `GEMINI_MODEL` — `gemini-2.5-flash` (optional).
+- `FRONTEND_URLS` — `https://ai-utkarsh-frontend-ex54.vercel.app,http://localhost:5173`
+
+**Important:** Account/profile features require MongoDB Atlas and `TOKEN_SECRET`. AI tools require `GEMINI_API_KEY`. Never put these secrets in frontend files or commit them.
+
+### Deploy the update
+
+1. In Render, add the environment variables above and deploy the latest `main` commit.
+2. In Vercel, confirm the project root is `frontend` and redeploy the latest `main` commit.
+3. Open `/api/health` on Render; it should report `database: connected`.
+4. Open the website → **Sign in** → create account → edit profile → **Save profile**.
+
+The profile API uses PBKDF2 password hashing and signed, expiring bearer tokens. This is a starter account system; add email verification, password reset, rate limiting and stronger production monitoring before broad public launch.
