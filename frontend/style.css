@@ -36,3 +36,23 @@
 @media(max-width:900px){.nav{gap:10px}.menu-toggle{display:inline-block}.nav nav{display:none;position:absolute;top:81px;left:0;right:0;background:#f6f8fb;border-bottom:1px solid #d6dee8;padding:20px 5vw;flex-direction:column;gap:18px}.nav nav.open{display:flex}.nav nav a{font-size:12px}.focus-layout{grid-template-columns:1fr}}
 @media(max-width:600px){.nav{padding:0 4vw}.nav-action{padding:9px 10px}.focus-card,.focus-note{padding:22px}.focus-card h3{margin-top:23px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* Student profile and account modal */
+.profile-section{background:#eaf0f6}.profile-shell{display:grid;grid-template-columns:.8fr 1.2fr;gap:15px;margin-top:50px}
+.profile-card,.profile-form{background:white;border:1px solid #d6dee8;border-radius:9px;padding:28px}
+.profile-card{display:flex;align-items:flex-start;gap:17px;flex-wrap:wrap;align-content:start}
+.profile-avatar{width:54px;height:54px;display:grid;place-items:center;border-radius:9px;background:#10243e;color:#e6c47d;font:700 25px "Noto Serif",serif}
+.profile-card small{font:500 9px "DM Mono",monospace;color:#8290a2;letter-spacing:.1em}
+.profile-card h3{font-size:23px;color:#10243e;margin:9px 0}.profile-card p{font-size:12px;color:#718095;overflow-wrap:anywhere}
+.profile-form{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.profile-form label,.auth-box label{display:grid;gap:7px;font-size:11px;font-weight:800;color:#53647a}
+.profile-form input,.profile-form select,.auth-box input{width:100%;padding:12px;border:1px solid #d0dae5;border-radius:5px;background:#fbfcfe;font:inherit;color:#203751}
+.profile-form button,.profile-form #profileMessage{grid-column:1/-1}
+#profileMessage{font-size:12px;color:#607b55;margin:0}
+.auth-modal{position:fixed;inset:0;background:#0b1b2dcc;display:none;place-items:center;padding:20px;z-index:100}
+.auth-modal.open{display:grid}.auth-box{position:relative;width:min(100%,460px);background:#f8fafc;border-radius:12px;padding:35px;box-shadow:0 25px 90px #0004}
+.auth-close{position:absolute;right:17px;top:12px;border:0;background:none;font-size:28px;color:#607087;cursor:pointer}
+.auth-box h2{font-size:38px;letter-spacing:-.06em;color:#10243e;margin:25px 0 7px}.auth-box>p{font-size:13px;color:#6b7a8e;line-height:1.6}
+.auth-switch{display:flex;gap:8px;margin:22px 0}.auth-switch button{flex:1;padding:11px;border:1px solid #d0dae5;background:#fff;border-radius:5px;color:#52647a;cursor:pointer;font-weight:700}.auth-switch button.active{background:#10243e;color:#fff}
+#authForm{display:grid;gap:13px}#authSubmit{width:100%;justify-content:center}#authMessage{font-size:12px;color:#a45d45;margin:0;line-height:1.5}
+@media(max-width:800px){.profile-shell{grid-template-columns:1fr}.profile-form{grid-template-columns:1fr}}
